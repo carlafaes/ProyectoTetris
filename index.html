@@ -94,13 +94,23 @@
             moverArriba(){
                 this.posicion.y--;
             }
+
+            get mapaTablero(){
+                let retorno=[];//crea una matriz vacia
+                for(const pmino of this.mapa){
+                    let copy=pmino.copy().add(this.posicion);//copia el punto y lo suma con la posicion
+                    retorno.push(tablero.coordenada(copy.x,copy.y));//convierte las coordenadas del mapa a coordenadas del tablero
+                }
+                return retorno;
+            }
+
             //Esta funcion se encargara del procesamiento logico del dibujado del objeto
             dibujar(){
                 push();
                 fill("red");
-                for(const pmino of this.mapa){
+                for(const pmino of this.mapaTablero){
                     let coordDelTablero=tablero.coordenada(pmino.x,pmino.y);//obtiene las coordenadas del tablero
-                    rect(coordDelTablero.x,coordDelTablero.y,tablero.lado_celda);
+                    rect(pmino.x,pmino.y,tablero.lado_celda);//dibuja un rectangulo en las coordenadas del tablero
                 }
                 pop();
             }
