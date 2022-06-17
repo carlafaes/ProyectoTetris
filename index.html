@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Tetris</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js"></script>
+</head>
+
+<body>
+
+       
+    <script>
+        const MARGEN_TABLERO=20;
+        let reguladorVelocidad=0;
+        //la funcion setup es nativa de p5.js
+        //y sirve para ajustar las propiedades inciales de nuestros objetos y variables
+        function setup() {
+            createCanvas(900, 600);//crea un canvas de 900x600
+            tablero= new Tablero();//crea un objeto de la clase tablero. variable global por lo q no lleva let, const
+            crearMapeoBaseTetrimino();//crea una matriz de tetriminos
+            tetrimino=new Tetrimino();//crea un objeto de la clase tetrimino. variable global por lo q no lleva let, const
+            resizeCanvas(
+                tablero.ancho + (2*MARGEN_TABLERO),
+                tablero.alto + (2*MARGEN_TABLERO)//redimensiona el canvas
+            )
+        }
+        //la funcion draw es nativa de p5.js
+        //sirve para dar instrucciones precisas de dibujo sobre el canvas
+        function draw() {
+            background("green");
+            tablero.dibujar()
+            tetrimino.dibujar()
+            keyEventsTetris()
+        }
+
+        function keyEventsTetris() {
+            if(millis()-reguladorVelocidad < 100){
+                return;
+            }
+            reguladorVelocidad=millis();
+            if (keyIsDown(RIGHT_ARROW)) {
+                tetrimino.moverDerecha();
+            }
+            if(keyIsDown(LEFT_ARROW)){
+                tetrimino.moverIzquierda();
+            }
+            if(keyIsDown(DOWN_ARROW)){
+                tetrimino.moverAbajo();
+            }
+            if(keyIsDown(UP_ARROW)){
+                tetrimino.moverArriba();
+            }
+        }
+
+        function crearMapeoBaseTetrimino(){
+            tetriminosBase={
+                "Z":{
+                    "mapa":[
+                        createVector()
+                    ],
+                    "color":"red"
+                }
+            }
+        }
+
+
+        class Tetrimino{
+            constructor(nombre="Z"){
+                this.nombre=nombre;
+                let tetriminoBase=tetriminosBase[nombre];
+                this.color=tetriminoBase.color;
+                this.mapa=[]
+                for(const pmino of tetriminoBase.mapa){
+                    this.mapa.push(pmino.copy());
+                }
+                this.posicion= createVector(0,0);
+            }
+
+            //movimiento segun teclas de direccion
+            moverDerecha(){
+                this.posicion.x++;
+            }
+
+            moverIzquierda(){
+                this.posicion.x--;
+            }
+
+            moverAbajo(){
+                this.posicion.y++;
+            }
+            moverArriba(){
+                this.posicion.y--;
+            }
+            //Esta funcion se encargara del procesamiento logico del dibujado del objeto
+            dibujar(){
+                push();
+                fill("red");
+                for(const pmino of this.mapa){
+                    let coordDelTablero=tablero.coordenada(pmino.x,pmino.y);//obtiene las coordenadas del tablero
+                    rect(coordDelTablero.x,coordDelTablero.y,tablero.lado_celda);
+                }
+                pop();
+            }
+        }
+        
+    </script>
+
+    <script src="Tablero.js"></script>
+</body>
+
+</html>
