@@ -10,9 +10,9 @@ class Tablero{
         this.alto= this.filas*this.lado_celda;
         this.posicion= createVector(
             MARGEN_TABLERO,
-            MARGEN_TABLERO);//posicion inicial del tablero
+            MARGEN_TABLERO + this.lado_celda);//posicion inicial del tablero
     }
-    
+
     //la coordenada es una transformacion no lineal donde se aplica un escalamiento(multiplicacion) para el ajuste de las medidas y una traslacion (suma) para el ajuste de las posiciones.
     //En este caso no se usan rotaciones no se necesita
     coordenada(x,y){
