@@ -73,7 +73,7 @@
                 let tetriminoBase=tetriminosBase[nombre];
                 this.color=tetriminoBase.color;
                 this.mapa=[]
-                for(const pmino of tetriminoBase.mapa){
+                for(const pmino of tetriminoBase.mapa){//crea una copia del mapa
                     this.mapa.push(pmino.copy());
                 }
                 this.posicion= createVector(0,0);
