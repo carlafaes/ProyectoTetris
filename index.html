@@ -72,20 +72,60 @@
             //movimiento segun teclas de direccion
             moverDerecha(){
                 this.posicion.x++;
+                let salioDelTablero=!this.estaDentroTablero;
+                if(salioDelTablero){
+                    this.moverIzquierda();
+                }
             }
 
             moverIzquierda(){
                 this.posicion.x--;
+                let salioDelTablero=!this.estaDentroTablero;
+                if(salioDelTablero){
+                    this.moverDerecha();
+                }
             }
 
             moverAbajo(){
                 this.posicion.y++;
+                let salioDelTablero=!this.estaDentroTablero;
+                if(salioDelTablero){
+                    this.moverArriba();
+                }
             }
             moverArriba(){
                 this.posicion.y--;
             }
 
+            get estaDentroTablero(){
+                for(const pmino of this.mapaTablero){
+                    if(pmino.x  < 0 ){
+                        //Evita la salida por la izquierda del tetrimino
+                        return false;
+                    }
+                    if(pmino.x >= tablero.columnas){
+                     //Evita la salida por la derecha del tetrimino
+                        return false;
+                    }
+                    if(pmino.y >= tablero.filas){
+                     //Evita la salida por abajo del tetrimino
+                        return false;
+                    }
+                    return true
+                }
+            }
+
+
             get mapaTablero(){
+                let retorno=[];//crea una matriz vacia
+                for(const pmino of this.mapa){
+                    let copy=pmino.copy().add(this.posicion);//copia el punto y lo suma con la posicion
+                    retorno.push(copy);//convierte las coordenadas del mapa a coordenadas del tablero
+                }
+                return retorno;
+            }
+
+            get mapaCanvas(){
                 let retorno=[];//crea una matriz vacia
                 for(const pmino of this.mapa){
                     let copy=pmino.copy().add(this.posicion);//copia el punto y lo suma con la posicion
