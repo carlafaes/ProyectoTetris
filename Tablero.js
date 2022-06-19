@@ -31,6 +31,7 @@ class Tablero{
             }
             this.minosAlmacenados[pmino.x][pmino.y] = tetrimino.nombre;
         }
+        this.buscarLineasHorizontalesBorrar();
     }
 
     buscarLineasHorizontalesBorrar(){

@@ -14,12 +14,17 @@
        
     <script>
         const MARGEN_TABLERO=20;
-        let reguladorVelocidad=0;
+        let reguladorVelocidadTeclas=0;
+        let reguladorDeCaida= 0;
 
         //Dificultad, hacer caer las pìezas cada determinada cantidad de tiempo, simulando una especie de gravedad, esto se hace facilmente con un setInterval
         setInterval(()=>{
+            if(millis() - reguladorDeCaida < 200){
+                return
+            }
+            reguladorDeCaida=millis();
             tetrimino.moverAbajo()
-        },100) 
+        },400) 
 
 
         //la funcion setup es nativa de p5.js
@@ -44,21 +49,25 @@
         }
 
         function keyEventsTetris() {
-            if(millis()-reguladorVelocidad < 100){
+            if(millis()-reguladorVelocidadTeclas < 100){
                 return;
             }
             reguladorVelocidad=millis();
             if (keyIsDown(RIGHT_ARROW)) {
                 tetrimino.moverDerecha();
+                reguladorDeCaida=millis();
             }
             if(keyIsDown(LEFT_ARROW)){
                 tetrimino.moverIzquierda();
+                reguladorDeCaida=millis();
             }
             if(keyIsDown(DOWN_ARROW)){
                 tetrimino.moverAbajo();
+                reguladorDeCaida=millis();
             }
             if(keyIsDown(UP_ARROW)){
                 tetrimino.girar();
+                reguladorDeCaida=millis();
             }
         }
 

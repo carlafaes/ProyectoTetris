@@ -30,9 +30,13 @@
                 this.posicion.y++;
                 if(this.movimientoErroneo){
                     this.moverArriba();
-                    tablero.almacenarMino = this
-                    tetrimino = new Tetrimino()
+                    if(tetrimino == this){
+                        tablero.almacenarMino = this
+                        tetrimino = new Tetrimino()
+                    }
+                    return false;
                 }
+                return true;
             }
             moverArriba(){
                 this.posicion.y--;
@@ -115,7 +119,20 @@
                     Tetrimino.dibujarMino(pmino);
                 }
                 pop();
+
+                if(tetrimino == this){
+                    this.dibujarEspectro()
+                }
             }
+
+
+            dibujarEspectro(){
+                this.espectro= new Tetrimino(this.nombre);
+                while(this.espectro.moverAbajo()){
+                    this.espectro.dibujar();
+                }
+            }
+
 
             static dibujarMino(pmino){
                 rect(pmino.x,pmino.y,tablero.lado_celda);//dibuja un rectangulo en las coordenadas del tablero
