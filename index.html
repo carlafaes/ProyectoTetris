@@ -11,11 +11,38 @@
 
 <body>
 
+    <style>
+        body{
+            background: rgb(6, 3, 29);
+            margin:0;
+            padding:0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+        }
+
+        h2{
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-weight: 800;
+            font-size: 24px;
+            color: #5a17c5;
+            text-shadow: 2px 2px 1px rgb(154, 158, 190);
+        }
+        
+        canvas{
+            filter:drop-shadow(5px 5px 5px rgb(75, 123, 194))
+        }
+        </style>
+       <h2>Tetris Game</h2>
        
-    <script>
-        const MARGEN_TABLERO=20;
-        let reguladorVelocidadTeclas=0;
-        let reguladorDeCaida= 0;
+       <script>
+           const MARGEN_TABLERO=29;
+           let reguladorVelocidadTeclas=0;
+           let reguladorDeCaida= 0;
+        let lineasHechas=0;
 
         //Dificultad, hacer caer las pìezas cada determinada cantidad de tiempo, simulando una especie de gravedad, esto se hace facilmente con un setInterval
         setInterval(()=>{
@@ -42,14 +69,25 @@
         //la funcion draw es nativa de p5.js
         //sirve para dar instrucciones precisas de dibujo sobre el canvas
         function draw() {
-            background("blue");
+            background("#5a17c5");//fija el color de fondo
+            dibujarPuntaje()
             tablero.dibujar()
             tetrimino.dibujar()
             keyEventsTetris()
         }
 
+        function dibujarPuntaje(){
+            push();
+            textSize(20)
+            strokeWeight(1)
+            stroke("black")
+            fill("white");
+            text("Puntaje: "+lineasHechas, MARGEN_TABLERO, MARGEN_TABLERO);
+            pop();
+        }
+
         function keyEventsTetris() {
-            if(millis()-reguladorVelocidadTeclas < 100){
+            if(millis()-reguladorVelocidadTeclas < 160){
                 return;
             }
             reguladorVelocidad=millis();
@@ -67,6 +105,10 @@
             }
             if(keyIsDown(UP_ARROW)){
                 tetrimino.girar();
+                reguladorDeCaida=millis();
+            }
+            if(keyIsDown(32)){
+                tetrimino.ponerEnElFondo()
                 reguladorDeCaida=millis();
             }
         }

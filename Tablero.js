@@ -28,6 +28,7 @@ class Tablero{
                 //juego terminado
                 tablero= new Tablero()
                 tetrimino= new Tetrimino()
+                lineasHechas=0
             }
             this.minosAlmacenados[pmino.x][pmino.y] = tetrimino.nombre;
         }
@@ -52,6 +53,7 @@ class Tablero{
     }
 
     borrarLineasHorizontales(lineas){
+        lineasHechas += lineas.length
         for(const linea  of lineas){
             for(let fila = linea; fila >= 0; fila--){
                 for(let columna = 0; columna < this.columnas; columna++){

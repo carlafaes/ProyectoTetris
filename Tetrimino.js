@@ -43,6 +43,11 @@
             }
 
 
+            ponerEnElFondo(){
+                this.posicion= this.espectro.posicion
+                this.moverAbajo()
+            }
+
             girar(){
                 for(const pmino of this.mapa){
                     pmino.set(pmino.y, -pmino.x)
@@ -128,9 +133,15 @@
 
             dibujarEspectro(){
                 this.espectro= new Tetrimino(this.nombre);
-                while(this.espectro.moverAbajo()){
-                    this.espectro.dibujar();
+                this.espectro.posicion= this.posicion.copy();
+                for(let i=0; i < this.mapa.length; i++){
+                    this.espectro.mapa[i] = this.mapa[i].copy()
                 }
+                while(this.espectro.moverAbajo());
+                push()
+                    drawingContext.globalAlpha = 0.3;
+                    this.espectro.dibujar();
+                pop()
             }
 
 
