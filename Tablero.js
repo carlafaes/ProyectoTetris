@@ -33,6 +33,38 @@ class Tablero{
         }
     }
 
+    buscarLineasHorizontalesBorrar(){
+        let lineas=[];
+        for(let fila = this.filas - 1; fila >= 0; fila--){
+            let agregar= true;
+            for(let columna=0; columna < this.columnas; columna++){
+                if(!this.minosAlmacenados[columna][fila]){
+                    agregar= false;
+                    break;
+                }
+            }
+            if(agregar){
+                lineas.push(fila);
+            }
+        }
+        this.borrarLineasHorizontales(lineas);
+    }
+
+    borrarLineasHorizontales(lineas){
+        for(const linea  of lineas){
+            for(let fila = linea; fila >= 0; fila--){
+                for(let columna = 0; columna < this.columnas; columna++){
+                   if(fila==0){
+                       this.minosAlmacenados[columna][fila]="";
+                       continue
+                   }
+                   this.minosAlmacenados[columna][fila]= this.minosAlmacenados[columna][fila - 1]
+                }
+
+            }
+        }
+    }
+
     //la coordenada es una transformacion no lineal donde se aplica un escalamiento(multiplicacion) para el ajuste de las medidas y una traslacion (suma) para el ajuste de las posiciones.
     //En este caso no se usan rotaciones no se necesita
     coordenada(x,y){
