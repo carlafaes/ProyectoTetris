@@ -13,7 +13,7 @@
 
     <style>
         body{
-            background: rgb(6, 3, 29);
+            /* background: rgb(6, 3, 29); */
             margin:0;
             padding:0;
             min-height: 100vh;
@@ -27,7 +27,7 @@
         h2{
             font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
             font-weight: 800;
-            font-size: 24px;
+            font-size: 34px;
             color: #5a17c5;
             text-shadow: 2px 2px 1px rgb(154, 158, 190);
         }
@@ -42,14 +42,27 @@
            const MARGEN_TABLERO=29;
            let reguladorVelocidadTeclas=0;
            let reguladorDeCaida= 0;
-        let lineasHechas=0;
+           let lineasHechas=0;
+
+           //generacion de fondo dinamico
+           let anguloFondo= Math.random()*360;
+           let tonoFondo= Math.random()*360;
+           setInterval(()=>{
+            document.body.style.background= `linear-gradient(
+                ${anguloFondo}deg, 
+                hsl(${tonoFondo}, 100%, 50%),
+                hsl(${tonoFondo}, 100%, 5%)
+                )`;
+            anguloFondo += Math.random()
+            tonoFondo += Math.random()
+           },20)
 
         //Dificultad, hacer caer las pìezas cada determinada cantidad de tiempo, simulando una especie de gravedad, esto se hace facilmente con un setInterval
         setInterval(()=>{
-            if(millis() - reguladorDeCaida < 200){
+            if(millis() - reguladorDeCaida < 300){
                 return
             }
-            reguladorDeCaida=millis();
+            reguladorDeCaida = millis();
             tetrimino.moverAbajo()
         },400) 
 
@@ -63,12 +76,13 @@
             tetrimino=new Tetrimino();//crea un objeto de la clase tetrimino. variable global por lo q no lleva let, const
             resizeCanvas(
                 tablero.ancho + (2*MARGEN_TABLERO),
-                tablero.alto + (2*MARGEN_TABLERO + tablero.lado_celda)//redimensiona el canvas
+                tablero.alto + 2*MARGEN_TABLERO + 2*tablero.lado_celda//redimensiona el canvas
             )
         }
         //la funcion draw es nativa de p5.js
         //sirve para dar instrucciones precisas de dibujo sobre el canvas
         function draw() {
+            clear();
             background("#5a17c5");//fija el color de fondo
             dibujarPuntaje()
             tablero.dibujar()
@@ -86,11 +100,18 @@
             pop();
         }
 
+
+        let limiteReguladorVelocidadTeclas= 100;
+
         function keyEventsTetris() {
-            if(millis()-reguladorVelocidadTeclas < 160){
+            if(millis() - reguladorVelocidadTeclas < limiteReguladorVelocidadTeclas){
                 return;
             }
+            
+            limiteReguladorVelocidadTeclas=100
+            
             reguladorVelocidad=millis();
+
             if (keyIsDown(RIGHT_ARROW)) {
                 tetrimino.moverDerecha();
                 reguladorDeCaida=millis();
@@ -104,10 +125,12 @@
                 reguladorDeCaida=millis();
             }
             if(keyIsDown(UP_ARROW)){
+                limiteReguladorVelocidadTeclas= 150;
                 tetrimino.girar();
                 reguladorDeCaida=millis();
             }
             if(keyIsDown(32)){
+                limiteReguladorVelocidadTeclas=200
                 tetrimino.ponerEnElFondo()
                 reguladorDeCaida=millis();
             }

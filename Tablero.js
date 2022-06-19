@@ -5,18 +5,19 @@ class Tablero{
     constructor(){
         this.columnas= 10;
         this.filas= 20;
-        this.lado_celda=20;
-        this.ancho= this.columnas*this.lado_celda;
-        this.alto= this.filas*this.lado_celda;
+        this.lado_celda=25;
+        this.ancho= this.columnas * this.lado_celda;
+        this.alto= this.filas * this.lado_celda;
+
         this.posicion= createVector(
             MARGEN_TABLERO,
             MARGEN_TABLERO + 2*this.lado_celda);//posicion inicial del tablero
             
-            //minosAlmacenados es la variable que se encargara de representar los minos almacenados en el tablero
+//minosAlmacenados es la variable que se encargara de representar los minos almacenados en el tablero
             this.minosAlmacenados=[];
             for(let fila=0; fila<this.filas; fila++){
                 this.minosAlmacenados[fila]=[];//crea una fila vacia
-                for(let columna=0; columna<this.columnas; columna++){
+                for(let columna = 0; columna < this.columnas; columna++){
                     this.minosAlmacenados[fila].push("");   //agrega una columna vacia
                 }
             }
@@ -39,7 +40,7 @@ class Tablero{
         let lineas=[];
         for(let fila = this.filas - 1; fila >= 0; fila--){
             let agregar= true;
-            for(let columna=0; columna < this.columnas; columna++){
+            for(let columna= 0; columna < this.columnas; columna++){
                 if(!this.minosAlmacenados[columna][fila]){
                     agregar= false;
                     break;
@@ -53,7 +54,8 @@ class Tablero{
     }
 
     borrarLineasHorizontales(lineas){
-        lineasHechas += lineas.length
+        lineasHechas += lineas.length;
+
         for(const linea  of lineas){
             for(let fila = linea; fila >= 0; fila--){
                 for(let columna = 0; columna < this.columnas; columna++){
@@ -78,17 +80,16 @@ class Tablero{
     dibujar(){
         push()
         noStroke()//no se dibuja bordes
-        for(let columna = 0; columna<this.columnas; columna++){
-            
-            for(let fila = 0; fila<this.filas; fila++){
-                if((columna+fila)%2 == 0){
+        for(let columna = 0; columna < this.columnas; columna++){          
+            for(let fila = 0; fila < this.filas; fila++){
+                if(( columna + fila ) % 2 == 0){
                     fill("#000000");
                 }
                 else{
                     fill("#003");
                 }
-                let c= this.coordenada(columna,fila);
-                rect(c.x,c.y,this.lado_celda);
+                let c= this.coordenada( columna, fila );
+                rect(c.x, c.y , this.lado_celda);
             }   
          }
         pop()
@@ -102,7 +103,7 @@ class Tablero{
                 let nombreMino= this.minosAlmacenados[columna][fila];
                 if(nombreMino){
                     fill(tetriminosBase[nombreMino].color);
-                    Tetrimino.dibujarMino(this.coordenada(columna,fila));
+                    Tetrimino.dibujarMino(this.coordenada( columna, fila ));
             }
          }
         }
