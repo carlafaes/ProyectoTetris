@@ -15,6 +15,13 @@
     <script>
         const MARGEN_TABLERO=20;
         let reguladorVelocidad=0;
+
+        //Dificultad, hacer caer las pìezas cada determinada cantidad de tiempo, simulando una especie de gravedad, esto se hace facilmente con un setInterval
+        setInterval(()=>{
+            tetrimino.moverAbajo()
+        },400) 
+
+
         //la funcion setup es nativa de p5.js
         //y sirve para ajustar las propiedades inciales de nuestros objetos y variables
         function setup() {

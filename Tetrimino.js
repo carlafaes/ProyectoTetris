@@ -30,6 +30,8 @@
                 this.posicion.y++;
                 if(this.movimientoErroneo){
                     this.moverArriba();
+                    tablero.almacenarMino = this
+                    tetrimino = new Tetrimino()
                 }
             }
             moverArriba(){
@@ -56,7 +58,16 @@
 
             get movimientoErroneo(){
                 let salioDelTablero=!this.estaDentroTablero;
-                return salioDelTablero;
+                return salioDelTablero || this.colisionConMinosAlmacenados;
+            }
+
+            get colisionConMinosAlmacenados(){
+                for(const pmino of this.mapaTablero){
+                    if(tablero.minosAlmacenados[pmino.x][pmino.y]){
+                        return true;
+                    }
+                }
+                return false
             }
 
             get estaDentroTablero(){
@@ -100,29 +111,33 @@
             dibujar(){
                 push();
                 fill(this.color);
-                for(const pmino of this.mapaTablero){
-                    rect(pmino.x,pmino.y,tablero.lado_celda);//dibuja un rectangulo en las coordenadas del tablero
-                    push()
-                    noStroke();
-                    fill(255,255,255,100);
-                    beginShape();//inicia una figura
-                    vertex(pmino.x,pmino.y);//dibuja un punto en las coordenadas del tablero
-                    vertex(pmino.x+tablero.lado_celda,pmino.y);//dibuja un punto en las coordenadas del tablero
-                    vertex(pmino.x+tablero.lado_celda,pmino.y+tablero.lado_celda);
-                    endShape(CLOSE);//cierra la figura
-
-                    beginShape();
-                    fill(0,0,0,80);
-                    vertex(pmino.x,pmino.y);
-                    vertex(pmino.x, pmino.y + tablero.lado_celda);
-                    vertex(pmino.x+tablero.lado_celda,pmino.y+tablero.lado_celda);
-                    endShape(CLOSE);
-
-                    rect(pmino.x,pmino.y,tablero.lado_celda,tablero.lado_celda/2);
-                    pop()
-                    // let coordDelTablero=tablero.coordenada(pmino.x,pmino.y);//obtiene las coordenadas del tablero
+                for(const pmino of this.mapaCanvas){
+                    Tetrimino.dibujarMino(pmino);
                 }
                 pop();
+            }
+
+            static dibujarMino(pmino){
+                rect(pmino.x,pmino.y,tablero.lado_celda);//dibuja un rectangulo en las coordenadas del tablero
+                push()
+                noStroke();
+                fill(255,255,255,100);
+                beginShape();//inicia una figura
+                vertex(pmino.x,pmino.y);//dibuja un punto en las coordenadas del tablero
+                vertex(pmino.x+tablero.lado_celda,pmino.y);//dibuja un punto en las coordenadas del tablero
+                vertex(pmino.x+tablero.lado_celda,pmino.y+tablero.lado_celda);
+                endShape(CLOSE);//cierra la figura
+
+                beginShape();
+                fill(0,0,0,80);
+                vertex(pmino.x,pmino.y);
+                vertex(pmino.x, pmino.y + tablero.lado_celda);
+                vertex(pmino.x+tablero.lado_celda,pmino.y+tablero.lado_celda);
+                endShape(CLOSE);
+
+                // rect(pmino.x,pmino.y,tablero.lado_celda,tablero.lado_celda/2);
+                pop()
+                // let coordDelTablero=tablero.coordenada(pmino.x,pmino.y);//obtiene las coordenadas del tablero
             }
         }
 

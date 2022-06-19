@@ -12,7 +12,7 @@ class Tablero{
             MARGEN_TABLERO,
             MARGEN_TABLERO + 2*this.lado_celda);//posicion inicial del tablero
             
-            //memoria es la variable que se encargara de representar los minos almacenados en el tablero
+            //minosAlmacenados es la variable que se encargara de representar los minos almacenados en el tablero
             this.minosAlmacenados=[];
             for(let fila=0; fila<this.filas; fila++){
                 this.minosAlmacenados[fila]=[];//crea una fila vacia
@@ -24,7 +24,12 @@ class Tablero{
 
     set almacenarMino(tetrimino){
         for(const pmino of tetrimino.mapaTablero){
-            this.minosAlmacenados[pmino.y][pmino.x]=tetrimino.nombre;
+            if(pmino.y < 0){
+                //juego terminado
+                tablero= new Tablero()
+                tetrimino= new Tetrimino()
+            }
+            this.minosAlmacenados[pmino.x][pmino.y] = tetrimino.nombre;
         }
     }
 
@@ -34,7 +39,7 @@ class Tablero{
         return createVector(x,y).mult(this.lado_celda).add(this.posicion);
     }
 
-//Se encargara del procesamiento logico para el dibujado de este elemento
+    //Se encargara del procesamiento logico para el dibujado de este elemento
     dibujar(){
         push()
         noStroke()//no se dibuja bordes
@@ -51,6 +56,21 @@ class Tablero{
                 rect(c.x,c.y,this.lado_celda);
             }   
          }
+        pop()
+        this.dibujarMinosAlmacenados();
+    }
+
+    dibujarMinosAlmacenados(){
+        push()
+        for(let columna= 0; columna < this.columnas; columna++){
+            for(let fila= 0; fila < this.filas; fila++){
+                let nombreMino= this.minosAlmacenados[columna][fila];
+                if(nombreMino){
+                    fill(tetriminosBase[nombreMino].color);
+                    Tetrimino.dibujarMino(this.coordenada(columna,fila));
+            }
+         }
+        }
         pop()
     }
 }
